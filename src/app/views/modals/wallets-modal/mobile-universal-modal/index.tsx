@@ -148,11 +148,11 @@ export const MobileUniversalModal: Component<MobileUniversalModalProps> = props 
                     <For each={shouldShowMoreButton() ? walletsList().slice(0, 4) : walletsList()}>
                         {wallet => (
                             <li>
-                                <WalletItem
+                               {wallet.name !== 'DeWallet' && <WalletItem
                                     icon={wallet.imageUrl}
                                     name={wallet.name}
                                     onClick={() => props.onSelect(wallet)}
-                                />
+                                />}
                             </li>
                         )}
                     </For>

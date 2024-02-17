@@ -127,10 +127,10 @@ export const MobileUniversalModal: Component<MobileUniversalModalProps> = props 
             </Show>
             <Show when={!showQR()}>
                 <StyledLeftActionButton icon={<QRIcon />} onClick={onOpenQR} />
-                <H1Styled translationKey="walletModal.mobileUniversalModal.connectYourWallet">
-                    Connect your wallet
+                <H1Styled>
+                    Connect your DeWallet
                 </H1Styled>
-                <H2Styled translationKey="walletModal.mobileUniversalModal.openWalletOnTelegramOrSelect">
+                <H2Styled>
                     Open DeWallet in Telegram or select your wallet to connect
                 </H2Styled>
                 <TelegramButtonStyled
@@ -139,9 +139,9 @@ export const MobileUniversalModal: Component<MobileUniversalModalProps> = props 
                     onClick={onSelectTelegram}
                     scale="s"
                 >
-                    <Translation translationKey="walletModal.mobileUniversalModal.openWalletOnTelegram">
+                    <H1Styled>
                         Open DeWallet in Telegram
-                    </Translation>
+                    </H1Styled>
                 </TelegramButtonStyled>
                 <UlStyled>
                     <For each={shouldShowMoreButton() ? walletsList().slice(0, 4) : walletsList()}>

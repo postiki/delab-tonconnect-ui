@@ -1,6 +1,6 @@
 {
-  "name": "@tonconnect/ui",
-  "version": "2.0.1-beta.0",
+  "name": "delab-tonconnect-ui",
+  "version": "0.0.1",
   "scripts": {
     "start": "vite --host",
     "dev": "vite",
@@ -15,7 +15,7 @@
     "type": "git",
     "url": "git+https://github.com/postiki/delab-tonconnect-ui.git"
   },
-  "homepage": "https://github.com/postii",
+  "homepage": "https://github.com/postiki",
   "keywords": [
     "TON",
     "Wallet",
@@ -27,7 +27,7 @@
     "UI"
   ],
   "author": "postiki",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "files": [
     "lib",
     "dist"
@@ -71,8 +71,5 @@
   },
   "typedoc": {
     "entryPoint": "./src/library.ts"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/@postiki"
   }
 }

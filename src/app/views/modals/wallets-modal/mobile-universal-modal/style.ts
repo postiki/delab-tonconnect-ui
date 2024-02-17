@@ -99,6 +99,10 @@ export const H1Styled = styled(H1)`
     padding: 0 24px;
 `;
 
+export const H1StyledDe = styled(H1)`
+    margin: 0;
+`;
+
 export const H2Styled = styled(H2)`
     margin-bottom: 24px;
     padding: 0 24px;

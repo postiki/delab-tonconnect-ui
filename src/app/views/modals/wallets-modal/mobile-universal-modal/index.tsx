@@ -13,6 +13,7 @@ import {
 import {
     Divider,
     H1Styled,
+    H1StyledDe,
     H2Styled,
     IconContainer,
     OtherOptionButton,
@@ -139,9 +140,9 @@ export const MobileUniversalModal: Component<MobileUniversalModalProps> = props 
                     onClick={onSelectTelegram}
                     scale="s"
                 >
-                    <H1Styled>
-                        Open DeWallet in Telegram
-                    </H1Styled>
+                    <H1StyledDe>
+                        Open DeWallet
+                    </H1StyledDe>
                 </TelegramButtonStyled>
                 <UlStyled>
                     <For each={shouldShowMoreButton() ? walletsList().slice(0, 4) : walletsList()}>

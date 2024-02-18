@@ -91,7 +91,7 @@ export const MobileUniversalModal: Component<MobileUniversalModalProps> = props 
         const walletLink = connector.connect(
             {
                 bridgeUrl: 'https://bridge.tonapi.io/bridge',
-                universalLink: 'https://t.me/delabtonbot/wallet?attach=wallet'
+                universalLink: 'https://t.me/delabtonbot/wallet?attach=wallet' // https://t.me/wallet?attach=wallet
             },
             props.additionalRequest
         );

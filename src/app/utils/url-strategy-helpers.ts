@@ -70,7 +70,7 @@ export function redirectToTelegram(
             // TON Space should automatically open in stack and should close
             // itself after the user action.
 
-            options.returnStrategy = 'back';
+            options.returnStrategy = 'none';
             options.twaReturnUrl = undefined;
 
             sendOpenTelegramLink(addReturnStrategy(directLinkUrl.toString(), options));

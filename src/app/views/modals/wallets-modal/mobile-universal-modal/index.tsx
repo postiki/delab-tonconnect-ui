@@ -91,10 +91,12 @@ export const MobileUniversalModal: Component<MobileUniversalModalProps> = props 
         const walletLink = connector.connect(
             {
                 bridgeUrl: 'https://bridge.tonapi.io/bridge',
-                universalLink: 'https://t.me/delabtonbot/wallet?attach=delabtonbot/wallet' // https://t.me/wallet?attach=wallet
+                universalLink: 'https://t.me/delabtonbot/wallet?attach=wallet' // https://t.me/wallet?attach=wallet
             },
             props.additionalRequest
         );
+
+        console.log('CONNECTOR walletLink', walletLink)
 
         const forceRedirect = !firstClick();
         setFirstClick(false);

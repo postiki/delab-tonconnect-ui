@@ -64,6 +64,7 @@ export function redirectToTelegramDeWallet(
     if (!directLinkUrl.searchParams.has('startapp')) {
         directLinkUrl.searchParams.append('startapp', 'tonconnect');
     }
+    console.log('directLinkUrl.toString()', directLinkUrl.toString())
 
     if (isInTMA()) {
         if (isTmaPlatform('ios', 'android')) {
@@ -74,6 +75,7 @@ export function redirectToTelegramDeWallet(
             options.returnStrategy = 'none';
             options.twaReturnUrl = undefined;
 
+            console.log('REDIRECT ON IOS or ANDR TWA directLinkUrl.toString()', directLinkUrl.toString())
             sendOpenTelegramLinkDeWallet(addReturnStrategy(directLinkUrl.toString(), options));
         } else if (isTmaPlatform('macos', 'tdesktop')) {
             // Use a strategy involving a direct link to return to the app.

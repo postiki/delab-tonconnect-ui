@@ -80,6 +80,7 @@ export function sendExpand(): void {
  */
 
 export function sendOpenTelegramLinkDeWallet(link: string): void {
+    console.log("FINAL LINK", link)
     const url = new URL(link);
     if (url.protocol !== 'http:' && url.protocol !== 'https:') {
         throw new TonConnectUIError(`Url protocol is not supported: ${url}`);
@@ -90,13 +91,18 @@ export function sendOpenTelegramLinkDeWallet(link: string): void {
 
     const pathFull = url.pathname + url.search;
 
+    console.log("FINAL FULL url.search", url.search)
+    console.log("FINAL FULL url.pathname", url.pathname)
+    console.log("FINAL FULL pathFull", pathFull)
+
     // postEvent('web_app_open_tg_link', { path_full: pathFull });
     const window = getWindow();
     if (!window) {
         throw new TonConnectUIError(`Can't post event to parent window: window is not defined`);
     }
     if (window.Telegram !== undefined && window.Telegram.WebApp !== undefined) {
-        window.Telegram.WebApp.openTelegramLink(pathFull)
+        console.log("openTelegramLink  https://t.me + pathFull", 'https://t.me' + pathFull)
+        window.Telegram.WebApp.openTelegramLink('https://t.me' + pathFull)
     }
     
 

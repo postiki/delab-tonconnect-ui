@@ -94,6 +94,7 @@ export function sendOpenTelegramLinkDeWallet(link: string): void {
     console.log("FINAL FULL url.search", url.search)
     console.log("FINAL FULL url.pathname", url.pathname)
     console.log("FINAL FULL pathFull", pathFull)
+    console.log("FULL url", url)
 
     // postEvent('web_app_open_tg_link', { path_full: pathFull });
     const window = getWindow();
@@ -101,8 +102,8 @@ export function sendOpenTelegramLinkDeWallet(link: string): void {
         throw new TonConnectUIError(`Can't post event to parent window: window is not defined`);
     }
     if (window.Telegram !== undefined && window.Telegram.WebApp !== undefined) {
-        console.log("openTelegramLink  https://t.me + pathFull", 'https://t.me' + pathFull)
-        window.Telegram.WebApp.openTelegramLink('https://t.me' + pathFull)
+        console.log("openTelegramLink  url", url)
+        window.Telegram.WebApp.openTelegramLink(url.toString())
     }
     
 

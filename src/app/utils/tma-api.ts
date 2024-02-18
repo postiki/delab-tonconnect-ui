@@ -77,6 +77,28 @@ export function sendExpand(): void {
  * Opens link in TMA or in new tab and returns a function that closes the tab.
  * @param link
  */
+
+export function sendOpenTelegramLinkDeWallet(link: string): void {
+    const url = new URL(link);
+    if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+        throw new TonConnectUIError(`Url protocol is not supported: ${url}`);
+    }
+    if (url.hostname !== 't.me') {
+        throw new TonConnectUIError(`Url host is not supported: ${url}`);
+    }
+
+    const pathFull = url.pathname + url.search;
+
+    postEvent('web_app_open_tg_link', { path_full: pathFull });
+
+    // if (isIframe() || versionAtLeast('6.1')) {
+    //     postEvent('web_app_open_tg_link', { path_full: pathFull });
+    // } else {
+    //     openLinkBlank('https://t.me' + pathFull);
+    // }
+}
+
+
 export function sendOpenTelegramLink(link: string): void {
     const url = new URL(link);
     if (url.protocol !== 'http:' && url.protocol !== 'https:') {

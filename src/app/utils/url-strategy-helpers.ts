@@ -1,5 +1,5 @@
 import { ReturnStrategy } from 'src/models/return-strategy';
-import { isInTMA, isTmaPlatform, sendOpenTelegramLink } from 'src/app/utils/tma-api';
+import { isInTMA, isTmaPlatform, sendOpenTelegramLink, sendOpenTelegramLinkDeWallet } from 'src/app/utils/tma-api';
 import { isOS, openDeeplinkWithFallback, openLinkBlank } from 'src/app/utils/web-api';
 import { encodeTelegramUrlParameters, isTelegramUrl } from '@tonconnect/sdk';
 
@@ -47,7 +47,8 @@ export function addReturnStrategy(
  * The function adapts its behavior based on the execution context, such as the TMA or browser environment, and the operating system.
  * Different strategies involve manipulating URL parameters and utilizing platform-specific features for optimal user experience.
  */
-export function redirectToTelegram(
+
+export function redirectToTelegramDeWallet(
     universalLink: string,
     options: {
         returnStrategy: ReturnStrategy;
@@ -71,6 +72,88 @@ export function redirectToTelegram(
             // itself after the user action.
 
             options.returnStrategy = 'none';
+            options.twaReturnUrl = undefined;
+
+            sendOpenTelegramLinkDeWallet(addReturnStrategy(directLinkUrl.toString(), options));
+        } else if (isTmaPlatform('macos', 'tdesktop')) {
+            // Use a strategy involving a direct link to return to the app.
+            // The current TMA instance will close, and TON Space should
+            // automatically open, and reopen the application once the user
+            // action is completed.
+
+            sendOpenTelegramLink(addReturnStrategy(directLinkUrl.toString(), options));
+        } else if (isTmaPlatform('weba')) {
+            // Similar to macos/tdesktop strategy, but opening another TMA occurs
+            // through sending `web_app_open_tg_link` event to `parent`.
+
+            sendOpenTelegramLink(addReturnStrategy(directLinkUrl.toString(), options));
+        } else if (isTmaPlatform('web')) {
+            // Similar to iOS/Android strategy, but opening another TMA occurs
+            // through sending `web_app_open_tg_link` event to `parent`.
+
+            options.returnStrategy = 'back';
+            options.twaReturnUrl = undefined;
+
+            sendOpenTelegramLink(addReturnStrategy(directLinkUrl.toString(), options));
+        } else {
+            // Fallback for unknown platforms. Should use desktop strategy.
+
+            openLinkBlank(addReturnStrategy(directLinkUrl.toString(), options));
+        }
+    } else {
+        // For browser
+        if (isOS('ios', 'android')) {
+            // Use the `none` strategy. TON Space should do nothing after the user action.
+
+            options.returnStrategy = 'none';
+
+            openLinkBlank(addReturnStrategy(directLinkUrl.toString(), options.returnStrategy));
+        } else if (isOS('macos', 'windows', 'linux')) {
+            // Use the `none` strategy. TON Space should do nothing after the user action.
+
+            options.returnStrategy = 'none';
+            options.twaReturnUrl = undefined;
+
+            if (options.forceRedirect) {
+                openLinkBlank(addReturnStrategy(directLinkUrl.toString(), options));
+            } else {
+                const link = addReturnStrategy(directLinkUrl.toString(), options);
+                const deepLink = convertToTGDeepLink(link);
+
+                openDeeplinkWithFallback(deepLink, () => openLinkBlank(link));
+            }
+        } else {
+            // Fallback for unknown platforms. Should use desktop strategy.
+
+            openLinkBlank(addReturnStrategy(directLinkUrl.toString(), options));
+        }
+    }
+}
+
+export function redirectToTelegram(
+    universalLink: string,
+    options: {
+        returnStrategy: ReturnStrategy;
+        twaReturnUrl: `${string}://${string}` | undefined;
+        forceRedirect: boolean;
+    }
+): void {
+    options = { ...options };
+    // TODO: Remove this line after all dApps and the wallets-list.json have been updated
+    const directLink = convertToTGDirectLink(universalLink);
+    const directLinkUrl = new URL(directLink);
+
+    if (!directLinkUrl.searchParams.has('startapp')) {
+        directLinkUrl.searchParams.append('startapp', 'tonconnect');
+    }
+
+    if (isInTMA()) {
+        if (isTmaPlatform('ios', 'android')) {
+            // Use the `none` strategy, the current TMA instance will keep open.
+            // TON Space should automatically open in stack and should close
+            // itself after the user action.
+
+            options.returnStrategy = 'back';
             options.twaReturnUrl = undefined;
 
             sendOpenTelegramLink(addReturnStrategy(directLinkUrl.toString(), options));

@@ -32,7 +32,7 @@ import { copyToClipboard } from 'src/app/utils/copy-to-clipboard';
 import { TonConnectUIError } from 'src/errors';
 import { MobileUniversalQR } from './mobile-universal-qr';
 import { Translation } from 'src/app/components/typography/Translation';
-import { addReturnStrategy, redirectToTelegram } from 'src/app/utils/url-strategy-helpers';
+import { addReturnStrategy, redirectToTelegram, redirectToTelegramDeWallet } from 'src/app/utils/url-strategy-helpers';
 
 interface MobileUniversalModalProps {
     walletsList: WalletInfo[];
@@ -99,11 +99,12 @@ export const MobileUniversalModal: Component<MobileUniversalModalProps> = props 
         const forceRedirect = !firstClick();
         setFirstClick(false);
 
-        redirectToTelegram(walletLink, {
+        redirectToTelegramDeWallet(walletLink, {
             returnStrategy: appState.returnStrategy,
             twaReturnUrl: appState.twaReturnUrl,
             forceRedirect: forceRedirect
         });
+
     };
 
     const onOpenQR = (): void => {

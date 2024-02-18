@@ -1,6 +1,6 @@
 {
   "name": "delab-tonconnect-ui",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "scripts": {
     "start": "vite --host",
     "dev": "vite",

@@ -72,11 +72,14 @@ export function redirectToTelegramDeWallet(
             // TON Space should automatically open in stack and should close
             // itself after the user action.
 
+            const DeWalletDirectLink = convertToTGDirectLinkDeWallet(universalLink);
+            const directLinkUrlDeWall = new URL(DeWalletDirectLink);
+
             options.returnStrategy = 'none';
             options.twaReturnUrl = undefined;
 
-            console.log('REDIRECT ON IOS or ANDR TWA directLinkUrl.toString()', directLinkUrl.toString())
-            sendOpenTelegramLinkDeWallet(addReturnStrategy(directLinkUrl.toString(), options));
+            console.log('REDIRECT ON IOS or ANDR TWA directLinkUrlDeWall.toString()', directLinkUrlDeWall.toString())
+            sendOpenTelegramLinkDeWallet(addReturnStrategy(directLinkUrlDeWall.toString(), options));
         } else if (isTmaPlatform('macos', 'tdesktop')) {
             // Use a strategy involving a direct link to return to the app.
             // The current TMA instance will close, and TON Space should
@@ -237,6 +240,16 @@ function convertToTGDirectLink(universalLink: string): string {
     if (url.searchParams.has('attach')) {
         url.searchParams.delete('attach');
         url.pathname += '/start';
+    }
+
+    return url.toString();
+}
+
+function convertToTGDirectLinkDeWallet(universalLink: string): string {
+    const url = new URL(universalLink);
+
+    if (url.searchParams.has('attach')) {
+        url.searchParams.delete('attach');
     }
 
     return url.toString();

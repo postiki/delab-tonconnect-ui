@@ -19,6 +19,7 @@ declare global {
             WebApp?: {
                 platform?: TmaPlatform;
                 version?: string;
+                openTelegramLink(url: string): void;
             };
         };
     }
@@ -89,7 +90,15 @@ export function sendOpenTelegramLinkDeWallet(link: string): void {
 
     const pathFull = url.pathname + url.search;
 
-    postEvent('web_app_open_tg_link', { path_full: pathFull });
+    // postEvent('web_app_open_tg_link', { path_full: pathFull });
+    const window = getWindow();
+    if (!window) {
+        throw new TonConnectUIError(`Can't post event to parent window: window is not defined`);
+    }
+    if (window.Telegram !== undefined && window.Telegram.WebApp !== undefined) {
+        window.Telegram.WebApp.openTelegramLink(pathFull)
+    }
+    
 
     // if (isIframe() || versionAtLeast('6.1')) {
     //     postEvent('web_app_open_tg_link', { path_full: pathFull });

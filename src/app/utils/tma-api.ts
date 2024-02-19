@@ -97,23 +97,25 @@ export function sendOpenTelegramLinkDeWallet(link: string): void {
     console.log("FULL url", url)
 
     // postEvent('web_app_open_tg_link', { path_full: pathFull });
-    // const window = getWindow();
-    // if (!window) {
-    //     throw new TonConnectUIError(`Can't post event to parent window: window is not defined`);
-    // }
-    // if (window.Telegram !== undefined && window.Telegram.WebApp !== undefined) {
-    //     console.log("openTelegramLink  url", url)
-    //     window.Telegram.WebApp.openTelegramLink(url.toString())
-    // }
+    const window = getWindow();
+    if (!window) {
+        throw new TonConnectUIError(`Can't post event to parent window: window is not defined`);
+    }
+    if (window.Telegram !== undefined && window.Telegram.WebApp !== undefined) {
+        console.log("openTelegramLink link", link)
+        const newLink = link.replace('/start', '');
+        console.log("openTelegramLink newLink", newLink)
+        window.Telegram.WebApp.openTelegramLink(newLink)
+    }
     
 
-    if (isIframe() || versionAtLeast('6.1')) {
-        console.log('isIframe pathFull', pathFull)
-        postEvent('web_app_open_tg_link', { path_full: pathFull });
-    } else {
-        console.log('not isIframe pathFull', pathFull)
-        openLinkBlank('https://t.me' + pathFull);
-    }
+    // if (isIframe() || versionAtLeast('6.1')) {
+    //     console.log('isIframe pathFull', pathFull)
+    //     postEvent('web_app_open_tg_link', { path_full: pathFull });
+    // } else {
+    //     console.log('not isIframe pathFull', pathFull)
+    //     openLinkBlank('https://t.me' + pathFull);
+    // }
 }
 
 

@@ -116,6 +116,7 @@ export function sendOpenTelegramLinkDeWallet(link: string): void {
 
 
 export function sendOpenTelegramLink(link: string): void {
+    console.log("FINAL LINK", link)
     const url = new URL(link);
     if (url.protocol !== 'http:' && url.protocol !== 'https:') {
         throw new TonConnectUIError(`Url protocol is not supported: ${url}`);
@@ -126,11 +127,16 @@ export function sendOpenTelegramLink(link: string): void {
 
     const pathFull = url.pathname + url.search;
 
-    if (isIframe() || versionAtLeast('6.1')) {
-        postEvent('web_app_open_tg_link', { path_full: pathFull });
-    } else {
-        openLinkBlank('https://t.me' + pathFull);
-    }
+    console.log("FINAL FULL url.search", url.search)
+    console.log("FINAL FULL url.pathname", url.pathname)
+    console.log("FINAL FULL pathFull", pathFull)
+    console.log("FULL url", url)
+
+    // if (isIframe() || versionAtLeast('6.1')) {
+    //     postEvent('web_app_open_tg_link', { path_full: pathFull });
+    // } else {
+    //     openLinkBlank('https://t.me' + pathFull);
+    // }
 }
 
 function isIframe(): boolean {

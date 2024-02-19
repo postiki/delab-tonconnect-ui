@@ -152,6 +152,8 @@ export function redirectToTelegram(
         directLinkUrl.searchParams.append('startapp', 'tonconnect');
     }
 
+    console.log("tonspace directLinkUrl", directLinkUrl)
+
     if (isInTMA()) {
         if (isTmaPlatform('ios', 'android')) {
             // Use the `none` strategy, the current TMA instance will keep open.

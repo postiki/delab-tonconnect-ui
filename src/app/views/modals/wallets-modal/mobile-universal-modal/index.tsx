@@ -82,32 +82,58 @@ export const MobileUniversalModal: Component<MobileUniversalModalProps> = props 
         openLinkBlank(addReturnStrategy(getUniversalLink(), appState.returnStrategy));
     };
 
+    // const onSelectTelegram = (): void => {
+    //     // const atWallet = props.walletsList.find(wallet => wallet.appName === AT_WALLET_APP_NAME);
+    //     // if (!atWallet || !isWalletInfoRemote(atWallet)) {
+    //     //     throw new TonConnectUIError('@wallet bot not found in the wallets list');
+    //     // }
+
+    //     const walletLink = connector.connect(
+    //         {
+    //             bridgeUrl: 'https://bridge.tonapi.io/bridge',
+    //             universalLink: 'https://t.me/delabtonbot/wallet?attach=wallet' // https://t.me/wallet?attach=wallet
+    //         },
+    //         props.additionalRequest
+    //     );
+
+    //     console.log('CONNECTOR walletLink', walletLink)
+
+    //     const forceRedirect = !firstClick();
+    //     setFirstClick(false);
+
+    //     redirectToTelegramDeWallet(walletLink, {
+    //         returnStrategy: appState.returnStrategy,
+    //         twaReturnUrl: appState.twaReturnUrl,
+    //         forceRedirect: forceRedirect
+    //     });
+
+    // };
+
     const onSelectTelegram = (): void => {
-        // const atWallet = props.walletsList.find(wallet => wallet.appName === AT_WALLET_APP_NAME);
-        // if (!atWallet || !isWalletInfoRemote(atWallet)) {
-        //     throw new TonConnectUIError('@wallet bot not found in the wallets list');
-        // }
+        const atWallet = props.walletsList.find(wallet => wallet.appName === AT_WALLET_APP_NAME);
+        if (!atWallet || !isWalletInfoRemote(atWallet)) {
+            throw new TonConnectUIError('@wallet bot not found in the wallets list');
+        }
 
         const walletLink = connector.connect(
             {
-                bridgeUrl: 'https://bridge.tonapi.io/bridge',
-                universalLink: 'https://t.me/delabtonbot/wallet?attach=wallet' // https://t.me/wallet?attach=wallet
+                bridgeUrl: atWallet.bridgeUrl,
+                universalLink: atWallet.universalLink
             },
             props.additionalRequest
         );
-
         console.log('CONNECTOR walletLink', walletLink)
 
         const forceRedirect = !firstClick();
         setFirstClick(false);
 
-        redirectToTelegramDeWallet(walletLink, {
+        redirectToTelegram(walletLink, {
             returnStrategy: appState.returnStrategy,
             twaReturnUrl: appState.twaReturnUrl,
             forceRedirect: forceRedirect
         });
-
     };
+
 
     const onOpenQR = (): void => {
         setShowQR(true);

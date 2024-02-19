@@ -101,6 +101,7 @@ export const H1Styled = styled(H1)`
 
 export const H1StyledDe = styled(H1)`
     margin: 0;
+    color: #fff;
 `;
 
 export const H2Styled = styled(H2)`

@@ -9,11 +9,11 @@ import {
 import { ConnectAdditionalRequest, isWalletInfoRemote, WalletInfo } from '@tonconnect/sdk';
 import { appState } from 'src/app/state/app.state';
 import { setLastSelectedWalletInfo } from 'src/app/state/modals-state';
-import { FourWalletsItem, H1, WalletLabeledItem } from 'src/app/components';
+import { FourWalletsItem, H1, WalletItem, WalletLabeledItem } from 'src/app/components';
 import { PersonalizedWalletInfo } from 'src/app/models/personalized-wallet-info';
 import { IMG } from 'src/app/env/IMG';
 
-import { addReturnStrategy } from 'src/app/utils/url-strategy-helpers';
+import { addReturnStrategy, redirectToTelegramDeWallet } from 'src/app/utils/url-strategy-helpers';
 
 interface DesktopUniversalModalProps {
     additionalRequest: ConnectAdditionalRequest;
@@ -28,6 +28,30 @@ interface DesktopUniversalModalProps {
 export const DesktopUniversalModal: Component<DesktopUniversalModalProps> = props => {
     const [popupOpened, setPopupOpened] = createSignal(false);
     const connector = appState.connector;
+
+
+    const onSelectTelegram = (): void => {
+
+        const walletLink = connector.connect(
+            {
+                bridgeUrl: 'https://bridge.tonapi.io/bridge',
+                universalLink: 'https://t.me/delabtonbot/wallet?attach=wallet' // https://t.me/wallet?attach=wallet
+            },
+            props.additionalRequest
+        );
+
+        console.log('CONNECTOR walletLink', walletLink)
+
+        // const forceRedirect = !firstClick();
+        // setFirstClick(false);
+
+        redirectToTelegramDeWallet(walletLink, {
+            returnStrategy: appState.returnStrategy,
+            twaReturnUrl: appState.twaReturnUrl,
+            forceRedirect: true
+        });
+
+    };
 
     const walletsBridges = () => [...new Set(props.walletsList
         .filter(isWalletInfoRemote)
@@ -58,13 +82,20 @@ export const DesktopUniversalModal: Component<DesktopUniversalModalProps> = prop
                 Available wallets
             </H2AvailableWalletsStyled>
             <WalletsContainerStyled>
-                <For each={props.walletsList.slice(0, 3)}>
+                        <li>
+                        <WalletItem
+                                    icon={"https://avatars.githubusercontent.com/u/116884789?s=200&v=4"}
+                                    name={"DeWallet"}
+                                    onClick={onSelectTelegram}
+                                />
+                        </li>
+                <For each={props.walletsList.slice(1, 3)}>
                     {wallet => (
                         <li>
-                            <WalletLabeledItem
+                          { wallet.name !== 'DeWallet' && <WalletLabeledItem
                                 wallet={wallet}
                                 onClick={() => props.onSelect(wallet)}
-                            />
+                            />}
                         </li>
                     )}
                 </For>
